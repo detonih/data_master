@@ -1,0 +1,19 @@
+Dockerfile
+instalar unzip -ok
+instalar pandas - ok
+instalar sqlalchemy ok
+instalar pymysql ok
+export HADOOP_ROOT_LOGGER=DEBUG,console
+
+star.sh
+criar diretorio stage no hdfs - ok
+verificar funcionamento do hadoop com jps
+
+
+spark-submit --master yarn --deploy-mode client /scripts/python/enade.py
+
+
+esse deu certo
+sqoop import --connect "jdbc:mysql://172.21.0.1:3306/enade" --driver com.mysql.cj.jdbc.Driver --username root --password 1234 --table enade_tratado --m 1 --target-dir /asasprocessed222 --bindir $SQOOP_HOME/lib
+sqoop import --connect "jdbc:mysql://172.21.0.1:3306/enade" --driver com.mysql.cj.jdbc.Driver --username root --password 1234 --table enade_tratado --m 1 --target-dir /asasprocessed2223 --bindir /tmp/sqoop-root/compile
+sqoop import --connect "jdbc:mysql://172.21.0.1:3306/enade" --driver com.mysql.cj.jdbc.Driver --username root --password 1234 --table enade_tratado --m 1 --bindir /tmp/sqoop-root/compile
