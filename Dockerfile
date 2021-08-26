@@ -37,8 +37,8 @@ ENV HADOOP_MAPRED_HOME=$HADOOP_HOME
 ENV HADOOP_COMMON_HOME=$HADOOP_HOME
 ENV HADOOP_HDFS_HOME=$HADOOP_HOME
 ENV YARN_HOME=$HADOOP_HOME
-# ENV HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
-# ENV HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"
+ENV HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+ENV HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"
 # ENV HADOOP_HOME_WARN_SUPPRESS=1
 # ENV HADOOP_ROOT_LOGGER="ERROR,DRFA"
 # ENV HADOOP_ROOT_LOGGER=DEBUG,console
@@ -48,30 +48,23 @@ ENV YARN_HOME=$HADOOP_HOME
 # ENV YARN_RESOURCEMANAGER_USER="root"
 # ENV YARN_NODEMANAGER_USER="root"
 
-COPY configs/*xml $HADOOP_HOME/etc/hadoop/
+COPY configs/core-site.xml $HADOOP_HOME/etc/hadoop/
+COPY configs/hdfs-site.xml $HADOOP_HOME/etc/hadoop/
+COPY configs/mapred-site.xml $HADOOP_HOME/etc/hadoop/
+COPY configs/yarn-site.xml $HADOOP_HOME/etc/hadoop/
 
 ##HIVE
-# ENV HIVE_VERSION=${HIVE_VERSION:-2.3.2}
-# ENV HIVE_HOME /opt/hive
+ENV HIVE_VERSION=2.1.0
 
-# WORKDIR /opt
+RUN set -x \
+	&& curl -fSL http://archive.apache.org/dist/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz -o /tmp/hive.tar.gz \
+	&& tar -xvf /tmp/hive.tar.gz -C /opt/ \
+    && rm /tmp/hive.tar.gz
+	
+ENV HIVE_HOME=/opt/apache-hive-$HIVE_VERSION-bin
 
-#ALLREADY INSTALLED WGET
-# #Install Hive and PostgreSQL JDBC
-# RUN apt-get update && apt-get install -y wget procps && \
-# 	wget https://archive.apache.org/dist/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz && \
-# 	tar -xzvf apache-hive-$HIVE_VERSION-bin.tar.gz && \
-# 	mv apache-hive-$HIVE_VERSION-bin hive && \
-# 	wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar -O $HIVE_HOME/lib/postgresql-jdbc.jar && \
-# 	rm apache-hive-$HIVE_VERSION-bin.tar.gz && \
-# 	apt-get --purge remove -y wget && \
-# 	apt-get clean && \
-# 	rm -rf /var/lib/apt/lists/*
-
-# WORKDIR /
-
-# RUN mkdir /conf
-# COPY configs/hive-site.xml $HIVE_HOME/conf/
+COPY configs/hive-site.xml $HIVE_HOME/conf/
+COPY configs/hive-env.sh $HIVE_HOME/conf/
 
 #PYTHON
 # RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -126,7 +119,7 @@ COPY configs/*xml $HADOOP_HOME/etc/hadoop/
 #####
 
 # ENV PATH $HADOOP_HOME/bin/:$HIVE_HOME/bin:$SPARK_HOME/bin:${SQOOP_HOME}/bin:$PATH
-ENV PATH $PATH:$HADOOP_HOME/bin
+ENV PATH $PATH:$HADOOP_HOME/bin:$HIVE_HOME/bin
 
 ENV USER=root
 
