@@ -126,7 +126,6 @@ RUN rm -f /tmp/env.sh
 RUN mkdir /scripts
 RUN mkdir /raw-data
 RUN mkdir /processed
-RUN mkdir /sql
 
 ADD start.sh /start.sh
 RUN chmod a+x /start.sh

@@ -14,7 +14,6 @@ services:
       - ./scripts:/scripts
       - ./raw-data:/raw-data
       - ./processed:/processed
-      - ./sql:/sql
     user: root
     networks: 
       - data_master
