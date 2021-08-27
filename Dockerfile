@@ -18,7 +18,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
 
 ##HADOOP
-
 ENV HADOOP_VERSION=2.7.2
 ENV HADOOP_URL https://archive.apache.org/dist/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz
 
@@ -26,10 +25,6 @@ RUN set -x \
     && curl -fSL "$HADOOP_URL" -o /tmp/hadoop.tar.gz \
     && tar -xvf /tmp/hadoop.tar.gz -C /opt/ \
     && rm /tmp/hadoop.tar.gz*
-
-# RUN ln -s /opt/hadoop-$HADOOP_VERSION/etc/hadoop /etc/hadoop
-
-# RUN mkdir /opt/hadoop-$HADOOP_VERSION/logs
 
 ENV HADOOP_HOME=/opt/hadoop-$HADOOP_VERSION
 ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
@@ -82,8 +77,8 @@ RUN set -x \
     && rm -r /tmp/mysql-connector-java-8.0.21 \
     && rm /tmp/mysql-connector-java-8.0.21.tar.gz
 
-RUN set-x \
-    && curl -fSL https://downloads.apache.org//commons/lang/binaries/commons-lang-2.6-bin.tar.gz -o /tmp/commons-lang-2.6-bin.tar.gz \
+RUN set -x \
+    && curl -fSL https://downloads.apache.org/commons/lang/binaries/commons-lang-2.6-bin.tar.gz -o /tmp/commons-lang-2.6-bin.tar.gz \
     && tar -xvf /tmp/commons-lang-2.6-bin.tar.gz -C /tmp/ \
     && mv /tmp/commons-lang-2.6/commons-lang-2.6.jar ${SQOOP_HOME}/lib \
     && rm -r /tmp/commons-lang-2.6/ \
@@ -104,8 +99,8 @@ RUN pip install sqlalchemy
 RUN pip install pymysql
 
 ##SPARK
-ENV SPARK_VERSION==2.4.8
-ENV SPARK_URL https://www.apache.org/dist/spark/spark-$SPARK_HOME/spark-$SPARK_HOME-bin-hadoop2.7.tgz 
+ENV SPARK_VERSION=2.4.8
+ENV SPARK_URL=https://www.apache.org/dist/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop2.7.tgz 
 
 RUN set -x \
     && curl -fSL "$SPARK_URL" -o /tmp/spark.tar.gz \
@@ -113,11 +108,10 @@ RUN set -x \
     && rm /tmp/spark.tar.gz*
 
 ENV SPARK_HOME=/opt/spark-$SPARK_VERSION-bin-hadoop2.7
-# ENV SPARK_CONF_DIR=$SPARK_HOME/conf
-# ENV PYSPARK_PYTHON=/usr/bin/python3.6
-# ENV PYTHONPATH=/usr/lib/python3.6
+ENV PYSPARK_PYTHON=python3.6
 
 ENV PATH $PATH:$HADOOP_HOME/bin:$HIVE_HOME/bin:$SQOOP_HOME/bin:$SPARK_HOME/bin
+ENV HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$HIVE_HOME/lib/*
 
 RUN \
   ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa && \
@@ -125,13 +119,14 @@ RUN \
   chmod 0600 ~/.ssh/authorized_keys
 
 COPY config/env.sh /tmp/env.sh
-RUN chmod a+x /env.sh
-RUN /env.sh
-RUN rm -f /env.sh
+RUN chmod a+x /tmp/env.sh
+RUN /tmp/env.sh
+RUN rm -f /tmp/env.sh
 
 RUN mkdir /scripts
 RUN mkdir /raw-data
 RUN mkdir /processed
+RUN mkdir /sql
 
 ADD start.sh /start.sh
 RUN chmod a+x /start.sh

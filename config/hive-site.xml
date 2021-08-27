@@ -17,6 +17,10 @@ limitations under the License.
 -->
 <configuration>
 <property>
+    <name>datanucleus.autoCreateSchema</name>
+    <value>true</value>
+</property>
+<property>
 <name>javax.jdo.option.ConnectionURL</name>
 <value>jdbc:derby:;databaseName=/opt/apache-hive-2.1.0-bin/metastore_db;create=true</value>
 <description>

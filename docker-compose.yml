@@ -14,28 +14,29 @@ services:
       - ./scripts:/scripts
       - ./raw-data:/raw-data
       - ./processed:/processed
+      - ./sql:/sql
     user: root
     networks: 
       - data_master
 
-#   db:
-#     image: mysql:5.7
-#     container_name: data_master_db
-#     ports:
-#       - "3306:3306"
-#     volumes:
-#       - database-data:/data/mysql
-#     environment:
-#       MTSQL_USER: root
-#       MYSQL_ROOT_PASSWORD: 1234
-#       MYSQL_HOST: localhost
-#       MYSQL_DATABASE: enade
-#     restart: unless-stopped
-#     networks: 
-#       - data_master
+  db:
+    image: mysql:5.7
+    container_name: data_master_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - database-data:/data/mysql
+    environment:
+      MTSQL_USER: root
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_HOST: localhost
+      MYSQL_DATABASE: enade
+    restart: unless-stopped
+    networks: 
+      - data_master
 
-# volumes:
-#   database-data:
+volumes:
+  database-data:
 
 networks:
   data_master:
