@@ -16,4 +16,4 @@ prune:
 	docker container prune
 
 ddl:
-	docker exec -i data_master_db mysql -u root -p1234 < ./scripts/sql/enade_ddl.sql
+	docker exec -i data_master_db mysql -u root -p${MYSQL_ROOT_PASSWORD} < ./scripts/sql/enade_ddl.sql

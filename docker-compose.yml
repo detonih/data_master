@@ -9,11 +9,12 @@ services:
       - 8088:8088 
       - 50070:50070
       - 9000:9000
-
     volumes:
       - ./scripts:/scripts
       - ./raw-data:/raw-data
       - ./processed:/processed
+    env_file:
+      - ./.env
     user: root
     networks: 
       - data_master
@@ -24,12 +25,9 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - database-data:/data/mysql
-    environment:
-      MTSQL_USER: root
-      MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_HOST: localhost
-      MYSQL_DATABASE: enade
+      - database-data:/data/mysql 
+    env_file:
+      - ./.env
     restart: unless-stopped
     networks: 
       - data_master

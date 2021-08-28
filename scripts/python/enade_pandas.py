@@ -1,6 +1,7 @@
 import pandas as pd
 import sqlalchemy
 import pymysql
+import os
 
 enade = pd.read_csv(
     "/raw-data/microdados_enade_2019.txt",
@@ -8,6 +9,8 @@ enade = pd.read_csv(
     decimal = ',',
     low_memory=False
 )
+
+MYSQL_CONN_STRING = os.getenv('MYSQL_CONN_STRING')
 
 # TP_SEXO = sexo
 # NU_IDADE = idade
@@ -56,7 +59,7 @@ enade["TP_ESCOLA"] = enade.QE_I17.replace({
 enade = enade.drop(columns=['TP_SEXO','QE_I02', 'QE_I08', 'QE_I17'])
 
 
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:1234@172.21.0.1:3306/enade'
+SQLALCHEMY_DATABASE_URI = MYSQL_CONN_STRING
 engine = sqlalchemy.create_engine(
     SQLALCHEMY_DATABASE_URI
 )
