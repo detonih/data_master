@@ -12,7 +12,6 @@ services:
     volumes:
       - ./scripts:/scripts
       - ./raw-data:/raw-data
-      - ./processed:/processed
     env_file:
       - ./.env
     user: root

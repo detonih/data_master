@@ -100,6 +100,7 @@ RUN pip install sqlalchemy
 RUN pip install pymysql
 RUN pip install pymongo
 RUN pip install setuptools
+RUN pip install tweepy
 
 ##SPARK
 ENV SPARK_VERSION=2.4.8
@@ -137,7 +138,6 @@ RUN rm -f /tmp/env.sh
 
 RUN mkdir /scripts
 RUN mkdir /raw-data
-RUN mkdir /processed
 
 ADD start.sh /start.sh
 RUN chmod a+x /start.sh

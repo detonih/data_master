@@ -18,6 +18,6 @@ df = spark.sql(sql)
 
 rdd = df.rdd.map(tuple)
 
-rdd.saveToMongoDB(MONGO_CONN_STRING)
+rdd.saveToMongoDB(MONGO_CONN_STRING + '/admin.enade')
 
 spark.stop()
