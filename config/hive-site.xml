@@ -16,13 +16,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <configuration>
-<property>
+<!-- <property>
     <name>datanucleus.autoCreateSchema</name>
     <value>true</value>
 </property>
 <property>
+   <name>datanucleus.autoStartMechanism</name>
+   <value>SchemaTable</value>
+</property> -->
+<property>
 <name>javax.jdo.option.ConnectionURL</name>
-<value>jdbc:derby:;databaseName=/opt/apache-hive-2.1.0-bin/metastore_db;create=true</value>
+<value>jdbc:derby:metastore_db;create=true</value>
 <description>
 JDBC connect string for a JDBC metastore.
 To use SSL to encrypt/authenticate the connection, provide database-specific SSL flag in the connection URL.
@@ -34,11 +38,11 @@ For example, jdbc:postgresql://myhost/db?ssl=true for postgres database.
 <value>/user/hive/warehouse</value>
 <description>location of default database for the warehouse</description>
 </property>
-<property>
+<!-- <property>
 <name>hive.metastore.uris</name>
 <value/>
 <description>Thrift URI for the remote metastore. Used by metastore client to connect to remote metastore.</description>
-</property>
+</property> -->
 <property>
 <name>javax.jdo.option.ConnectionDriverName</name>
 <value>org.apache.derby.jdbc.EmbeddedDriver</value>

@@ -10,9 +10,17 @@ up:
 bash:
 	docker exec -it hadoop-env /bin/bash
 
+mysql:
+	docker exec -it data_master_db /bin/bash
+
+mongo:
+	docker exec -it data_master_mongo_db /bin/bash
+
+
 prune:
 	docker stop hadoop-env 
 	docker stop data_master_db
+	docker stop data_master_mongo_db
 	docker container prune
 
 ddl:

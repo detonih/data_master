@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       unzip \
       wget \
       rsync \
+      zip \
+      git \
     && rm -rf /var/lib/apt/lists/*
       
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
@@ -55,9 +57,8 @@ RUN set -x \
 	&& curl -fSL http://archive.apache.org/dist/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz -o /tmp/hive.tar.gz \
 	&& tar -xvf /tmp/hive.tar.gz -C /opt/ \
     && rm /tmp/hive.tar.gz
-	
-ENV HIVE_HOME=/opt/apache-hive-$HIVE_VERSION-bin
 
+ENV HIVE_HOME=/opt/apache-hive-$HIVE_VERSION-bin
 COPY config/hive-site.xml $HIVE_HOME/conf/
 COPY config/hive-env.sh $HIVE_HOME/conf/
 
@@ -97,6 +98,8 @@ RUN python3.6 -m pip install wheel
 RUN pip install pandas
 RUN pip install sqlalchemy
 RUN pip install pymysql
+RUN pip install pymongo
+RUN pip install setuptools
 
 ##SPARK
 ENV SPARK_VERSION=2.4.8
@@ -109,6 +112,15 @@ RUN set -x \
 
 ENV SPARK_HOME=/opt/spark-$SPARK_VERSION-bin-hadoop2.7
 ENV PYSPARK_PYTHON=python3.6
+
+#MONGODB CONNECTOR WITH HADOOP
+WORKDIR /tmp/
+RUN set -x \
+    && curl -fSL https://repo1.maven.org/maven2/org/mongodb/mongo-hadoop/mongo-hadoop-spark/2.0.2/mongo-hadoop-spark-2.0.2.jar -o /tmp/mongo-hadoop-spark-2.0.2.jar \
+    && git clone https://github.com/mongodb/mongo-hadoop.git \
+    && cd mongo-hadoop/spark/src/main/python \
+    && python3 /tmp/mongo-hadoop/spark/src/main/python/setup.py install
+WORKDIR /
 
 ENV PATH $PATH:$HADOOP_HOME/bin:$HIVE_HOME/bin:$SQOOP_HOME/bin:$SPARK_HOME/bin
 ENV HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$HIVE_HOME/lib/*

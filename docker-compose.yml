@@ -26,9 +26,21 @@ services:
       - "3306:3306"
     volumes:
       - database-data:/data/mysql 
+      - ./scripts/sql/enade_ddl.sql:/docker-entrypoint-initdb.d/initdb.sql
     env_file:
       - ./.env
     restart: unless-stopped
+    networks: 
+      - data_master
+
+  mongo:
+    image: mongo
+    container_name: data_master_mongo_db
+    ports:
+      - 27017:27017
+    restart: unless-stopped
+    env_file:
+      - ./.env
     networks: 
       - data_master
 
