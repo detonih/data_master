@@ -16,7 +16,6 @@ mysql:
 mongo:
 	docker exec -it data_master_mongo_db /bin/bash
 
-
 prune:
 	docker stop hadoop-env 
 	docker stop data_master_db
