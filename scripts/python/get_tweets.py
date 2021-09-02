@@ -4,6 +4,7 @@ from datetime import datetime
 import os
 import pandas as pd
 import sys
+import hashlib
 
 def create_user_locs(tweets):
   
@@ -25,9 +26,17 @@ def create_user_locs(tweets):
 
   return user_locs
 
+def hash_username(user_list):
+  length = range(len(user_list))
+  for i in length:
+    user_list[i][0] = hashlib.md5(user_list[i][0].encode()).hexdigest()
+    
+  return user_list
+
 def create_csv(data, file_name):
   df = pd.DataFrame(data=data,columns=['username', 'description', 'location', 'following',
                                 'followers', 'totaltweets', 'retweetcount', 'text'])
+
   df.to_csv(file_name)
 
 
@@ -53,5 +62,5 @@ if __name__ == "__main__":
               since=date_since).items(number_items)
 
   data = create_user_locs(tweets)
-
-  create_csv(data, file_name)
+  data_hash = hash_username(data)
+  create_csv(data_hash, file_name)

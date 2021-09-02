@@ -16,7 +16,7 @@ if [ -f "$FILE" ]; then
     fi
 
     if [ -f "$EXTRACTED_FILE" ]; then
-        echo "Puting $EXTRACTED_FILE to hdfs..."
+        echo "Putting $EXTRACTED_FILE to hdfs..."
         hdfs dfs -put -f /raw-data/3.DADOS/microdados_enade_2019.txt /stage/microdados_enade_2019.txt
         mv /raw-data/3.DADOS/microdados_enade_2019.txt /raw-data/microdados_enade_2019.txt
         if [ $? -eq 0 ]; then
