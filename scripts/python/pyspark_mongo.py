@@ -12,7 +12,7 @@ spark = SparkSession.builder \
                     .getOrCreate()
 
 sql = """
-SELECT * FROM enade.enade_tratado limit 10
+SELECT * FROM enade.enade_tratado limit 1000
 """
 df = spark.sql(sql)
 

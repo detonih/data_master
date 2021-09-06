@@ -60,9 +60,9 @@ enade["TP_ESCOLA"] = enade.QE_I17.replace({
 enade = enade.drop(columns=['TP_SEXO','QE_I02', 'QE_I08', 'QE_I17'])
 
 
-MYSQL_CONN_STRING + "/" + MYSQL_DATABASE
+connection_string = MYSQL_CONN_STRING + "/" + MYSQL_DATABASE
 engine = sqlalchemy.create_engine(
-    MYSQL_CONN_STRING
+    connection_string
 )
 
 enade.to_sql("enade_tratado", con=engine, index=False, if_exists='append', chunksize=1000)
